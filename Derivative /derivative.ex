@@ -14,7 +14,9 @@ defmodule Deriv do
         }
     #Derive with respect to x
    d =  deriv(e, :x)
-   prettyPrint(d)
+   IO.write("Expression --> #{prettyPrint(e)}\n")
+   IO.write("Derivative --> #{prettyPrint(d)}\n")
+   IO.write("Simplified --> #{prettyPrint(simplify(d))}\n")
   end
 
   #Order of the definitions
@@ -38,6 +40,27 @@ defmodule Deriv do
       {:mul, deriv(e1, v), e2},
       {:mul, e1, deriv(e2, v)}}
   end
+
+  def simplify({:add, e1, e2}) do
+    simplify_add(simplify(e1), simplify(e2))
+  end
+
+  def simplify({:mul, e1, e2}) do
+    simplify_mul(simplify(e1), simplify(e2))
+  end
+
+  #Final simplification, when nothing can be simplified
+  def simplify(e) do e end
+
+  def simplify_add({:num, 0}, e2) do e2 end
+  def simplify_add(e1, {:num, 0}) do e1 end
+  def simplify_add({:num, n1}, {:num, n2}) do {:num, n1+n2} end
+
+  def simplify_mul({:num, 0}, _) do {:num, 0} end
+  def simplify_mul(_, {:num, 0}) do {:num, 0} end
+  def simplify_mul({:num, 1}, e1) do e1 end
+  def simplify_mul(e2, {:num, 1}) do e2 end
+  def simplify_mul({:num, n1}, {:num, n2}) do {:num, n1*n2} end
 
   def prettyPrint ({:num, n}) do "#{n}" end
   def prettyPrint ({:var, v}) do "#{v}" end
