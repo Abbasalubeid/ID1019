@@ -13,9 +13,11 @@ defmodule Deriv do
           {:num, 4}
         }
     #Derive with respect to x
-    deriv(e, :x)
+   d =  deriv(e, :x)
+   prettyPrint(d)
   end
 
+  #Order of the definitions
   #f´(c) = 0
   def deriv({:num, _}, _) do {:num, 0} end
 
