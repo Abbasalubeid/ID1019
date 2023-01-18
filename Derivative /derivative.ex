@@ -6,13 +6,26 @@ defmodule Deriv do
   @type expr() :: literal()
   | {:add, expr(), expr()}
   | {:mul, expr(), expr()}
+  | {:exp, expr(), literal()}
 
-  def test() do
+  def test1() do
     e = {:add,
           {:mul, {:num, 2}, {:var, :x}},
           {:num, 4}
         }
     #Derive with respect to x
+   d =  deriv(e, :x)
+   IO.write("Expression --> #{prettyPrint(e)}\n")
+   IO.write("Derivative --> #{prettyPrint(d)}\n")
+   IO.write("Simplified --> #{prettyPrint(simplify(d))}\n")
+  end
+
+  def test2() do
+    e = {:add,
+          {:exp, {:var, :x}, {:num, 3}},
+          {:num, 4}
+        }
+   #Derive with respect to x
    d =  deriv(e, :x)
    IO.write("Expression --> #{prettyPrint(e)}\n")
    IO.write("Derivative --> #{prettyPrint(d)}\n")
@@ -41,6 +54,14 @@ defmodule Deriv do
       {:mul, e1, deriv(e2, v)}}
   end
 
+  #f(x) = x^n --> f´(x) = n*x^n-1
+  def deriv({:exp, e, {:num, n}}, v) do
+    {:mul,
+      {:mul, {:num, n}, {:exp, e, {:num, n-1}}},
+      deriv(e, v)
+    }
+  end
+
   def simplify({:add, e1, e2}) do
     simplify_add(simplify(e1), simplify(e2))
   end
@@ -49,22 +70,33 @@ defmodule Deriv do
     simplify_mul(simplify(e1), simplify(e2))
   end
 
+  def simplify({:exp, e1, e2}) do
+    simplify_exp(simplify(e1), simplify(e2))
+  end
+
   #Final simplification, when nothing can be simplified
   def simplify(e) do e end
 
   def simplify_add({:num, 0}, e2) do e2 end
   def simplify_add(e1, {:num, 0}) do e1 end
   def simplify_add({:num, n1}, {:num, n2}) do {:num, n1+n2} end
+  def simplify_add(e1, e2) do{:add, e1, e2} end
 
   def simplify_mul({:num, 0}, _) do {:num, 0} end
   def simplify_mul(_, {:num, 0}) do {:num, 0} end
   def simplify_mul({:num, 1}, e1) do e1 end
   def simplify_mul(e2, {:num, 1}) do e2 end
   def simplify_mul({:num, n1}, {:num, n2}) do {:num, n1*n2} end
+  def simplify_mul(e1, e2) do{:mul, e1, e2} end
+
+  def simplify_exp(_, {:num, 0}) do {:num, 1} end
+  def simplify_exp(e1, {:num, 1}) do e1 end
+  def simplify_exp(e1, e2) do {:exp, e1, e2} end
 
   def prettyPrint ({:num, n}) do "#{n}" end
   def prettyPrint ({:var, v}) do "#{v}" end
   def prettyPrint ({:add, e1, e2}) do "(#{prettyPrint(e1)} + #{prettyPrint(e2)})" end
   def prettyPrint ({:mul, e1, e2}) do "#{prettyPrint(e1)} * #{prettyPrint(e2)}" end
+  def prettyPrint ({:exp, e1, e2}) do "#{prettyPrint(e1)} ^ #{prettyPrint(e2)}" end
 
 end
