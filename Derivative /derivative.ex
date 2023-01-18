@@ -15,9 +15,12 @@ defmodule Deriv do
         }
     #Derive with respect to x
    d =  deriv(e, :x)
+   x = 5
+   c = calc(d, :x, x)
    IO.write("Expression --> #{prettyPrint(e)}\n")
    IO.write("Derivative --> #{prettyPrint(d)}\n")
    IO.write("Simplified --> #{prettyPrint(simplify(d))}\n")
+   IO.write("Calculated when x = #{x} --> #{prettyPrint(simplify(c))}\n")
   end
 
   def test2() do
@@ -27,9 +30,12 @@ defmodule Deriv do
         }
    #Derive with respect to x
    d =  deriv(e, :x)
+   x = 4
+   c = calc(d, :x, x)
    IO.write("Expression --> #{prettyPrint(e)}\n")
    IO.write("Derivative --> #{prettyPrint(d)}\n")
    IO.write("Simplified --> #{prettyPrint(simplify(d))}\n")
+   IO.write("Calculated when x = #{x} --> #{prettyPrint(simplify(c))}\n")
   end
 
   #Order of the definitions
@@ -62,6 +68,19 @@ defmodule Deriv do
     }
   end
 
+  def calc({:num, n}, _, _) do {:num, n} end
+  def calc({:var, v}, v, n) do {:num, n} end
+  def calc({:var, v}, _, _) do {:var, v} end
+  def calc({:add, e1, e2}, v, n) do
+    {:add, calc(e1, v, n), calc(e2, v, n)}
+  end
+  def calc({:mul, e1, e2}, v, n) do
+    {:mul, calc(e1, v, n), calc(e2, v, n)}
+  end
+  def calc({:exp, e1, e2}, v, n) do
+    {:exp, calc(e1, v, n), calc(e2, v, n)}
+  end
+
   def simplify({:add, e1, e2}) do
     simplify_add(simplify(e1), simplify(e2))
   end
@@ -91,7 +110,9 @@ defmodule Deriv do
 
   def simplify_exp(_, {:num, 0}) do {:num, 1} end
   def simplify_exp(e1, {:num, 1}) do e1 end
+  def simplify_exp({:num, n1}, {:num, n2}) do {:num, :math.pow(n1,n2)} end
   def simplify_exp(e1, e2) do {:exp, e1, e2} end
+
 
   def prettyPrint ({:num, n}) do "#{n}" end
   def prettyPrint ({:var, v}) do "#{v}" end
