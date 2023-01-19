@@ -48,8 +48,6 @@ defmodule Deriv do
     #  x = 4
     #  c = calc(d, :x, x)
 
-    IO.inspect(e)
-    IO.inspect(d)
     #  IO.write("Expression --> #{print(e)}\n")
     #  IO.write("Derivative --> #{print(d)}\n")
     #  IO.write("Simplified --> #{print(simplify(d))}\n")
@@ -118,25 +116,31 @@ defmodule Deriv do
     simplify_exp(simplify(e1), simplify(e2))
   end
 
+  def simplify({:div, e1, e2}) do
+    simplify_div(simplify(e1), simplify(e2))
+  end
+
   #Final simplification, when nothing can be simplified
   def simplify(e) do e end
 
-  def simplify_add({:num, 0}, e2) do e2 end
-  def simplify_add(e1, {:num, 0}) do e1 end
+  def simplify_add({:num, 0}, e) do e end
+  def simplify_add(e, {:num, 0}) do e end
   def simplify_add({:num, n1}, {:num, n2}) do {:num, n1+n2} end
-  def simplify_add(e1, e2) do{:add, e1, e2} end
+  def simplify_add(e1, e2) do {:add, e1, e2} end
 
   def simplify_mul({:num, 0}, _) do {:num, 0} end
   def simplify_mul(_, {:num, 0}) do {:num, 0} end
-  def simplify_mul({:num, 1}, e1) do e1 end
-  def simplify_mul(e2, {:num, 1}) do e2 end
+  def simplify_mul({:num, 1}, e) do e end
+  def simplify_mul(e, {:num, 1}) do e end
   def simplify_mul({:num, n1}, {:num, n2}) do {:num, n1*n2} end
-  def simplify_mul(e1, e2) do{:mul, e1, e2} end
+  def simplify_mul(e1, e2) do {:mul, e1, e2} end
 
   def simplify_exp(_, {:num, 0}) do {:num, 1} end
-  def simplify_exp(e1, {:num, 1}) do e1 end
+  def simplify_exp(e, {:num, 1}) do e end
   def simplify_exp({:num, n1}, {:num, n2}) do {:num, :math.pow(n1,n2)} end
   def simplify_exp(e1, e2) do {:exp, e1, e2} end
+
+  def simplify_div(e1, e2) do {:exp, e1, e2} end
 
 
   def print ({:num, n}) do "#{n}" end
