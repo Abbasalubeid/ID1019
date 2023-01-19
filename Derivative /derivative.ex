@@ -87,11 +87,7 @@ defmodule Deriv do
     }
   end
 
-
-
-
   #f(x) = ln(x) --> f'(x) = 1/x & f´(g(x)) = f´(g(x)) * g´(x) (chain rule if x is an expression instead of a variable)
-  def deriv({:ln, e}, v) do IO.inspect(e) end
   def deriv({:ln, e}, v) do {:mul, {:div, 1, e}, deriv(e, v)} end
 
 
