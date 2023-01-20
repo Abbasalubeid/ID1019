@@ -16,13 +16,13 @@ defmodule Deriv do
           {:num, 4}
         }
     #Derive with respect to x
-   d =  deriv(e, :x)
-   x = 5
-   c = calc(d, :x, x)
-   IO.write("Expression --> #{print(e)}\n")
-   IO.write("Derivative --> #{print(d)}\n")
-   IO.write("Simplified --> #{print(simplify(d))}\n")
-   IO.write("Calculated when x = #{x} --> #{print(simplify(c))}\n")
+    d =  deriv(e, :x)
+    x = 5
+    c = calc(d, :x, x)
+    IO.write("Expression --> #{print(e)}\n")
+    IO.write("Derivative --> #{print(d)}\n")
+    IO.write("Simplified --> #{print(simplify(d))}\n")
+    IO.write("Calculated when x = #{x} --> #{print(simplify(c))}\n")
   end
 
   def test2() do
@@ -30,28 +30,25 @@ defmodule Deriv do
           {:exp, {:var, :x}, {:num, 3}},
           {:num, 4}
         }
-   #Derive with respect to x
-   d =  deriv(e, :x)
-   x = 4
-   c = calc(d, :x, x)
-   IO.write("Expression --> #{print(e)}\n")
-   IO.write("Derivative --> #{print(d)}\n")
-   IO.write("Simplified --> #{print(simplify(d))}\n")
-   IO.write("Calculated when x = #{x} --> #{print(simplify(c))}\n")
+    #Derive with respect to x
+    d =  deriv(e, :x)
+    x = 4
+    c = calc(d, :x, x)
+    IO.write("Expression --> #{print(e)}\n")
+    IO.write("Derivative --> #{print(d)}\n")
+    IO.write("Simplified --> #{print(simplify(d))}\n")
+    IO.write("Calculated when x = #{x} --> #{print(simplify(c))}\n")
   end
 
   def test3() do
-    e = {:ln, {:add, {:var, :x}, {:num, 3}}}
+    e = {:ln, {:add, {:mul, {:num, 5}, {:var, :x}}, {:num, 3}}}
 
-   #Derive with respect to x
+  #  #Derive with respect to x
     d =  deriv(e, :x)
-    #  x = 4
-    #  c = calc(d, :x, x)
 
-    #  IO.write("Expression --> #{print(e)}\n")
-    #  IO.write("Derivative --> #{print(d)}\n")
-    #  IO.write("Simplified --> #{print(simplify(d))}\n")
-    #  IO.write("Calculated when x = #{x} --> #{print(simplify(c))}\n")
+  #   IO.inspect(d)
+    IO.write("Derivative --> #{print(d)}\n")
+    IO.write("Simplified --> #{print(simplify(d))}\n")
   end
 
   #Order of the definitions matter
@@ -86,7 +83,7 @@ defmodule Deriv do
   end
 
   #f(x) = ln(x) --> f'(x) = 1/x & f´(g(x)) = f´(g(x)) * g´(x) (chain rule if x is an expression instead of a variable)
-  def deriv({:ln, e}, v) do {:mul, {:div, 1, e}, deriv(e, v)} end
+  def deriv({:ln, e}, v) do {:mul, {:div, {:num, 1}, e}, deriv(e, v)} end
 
 
   #Extra
@@ -102,7 +99,6 @@ defmodule Deriv do
   def calc({:exp, e1, e2}, v, n) do
     {:exp, calc(e1, v, n), calc(e2, v, n)}
   end
-
 
   def simplify({:add, e1, e2}) do
     simplify_add(simplify(e1), simplify(e2))
@@ -140,7 +136,13 @@ defmodule Deriv do
   def simplify_exp({:num, n1}, {:num, n2}) do {:num, :math.pow(n1,n2)} end
   def simplify_exp(e1, e2) do {:exp, e1, e2} end
 
-  def simplify_div(e1, e2) do {:exp, e1, e2} end
+  #Undefined case
+  # def simplify_div(_, {:num, 0}) do nil
+
+  def simplify_div(e, {:num, 1}) do e end
+  def simplify_div(e, e) do 1 end
+  def simplify_div({:num, n1}, {:num, n2}) do {:num, n1 / n2} end
+  def simplify_div(e1, e2) do {:div, e1, e2} end
 
 
   def print ({:num, n}) do "#{n}" end
@@ -148,5 +150,6 @@ defmodule Deriv do
   def print ({:add, e1, e2}) do "(#{print(e1)} + #{print(e2)})" end
   def print ({:mul, e1, e2}) do "#{print(e1)} * #{print(e2)}" end
   def print ({:exp, e1, e2}) do "#{print(e1)} ^ #{print(e2)}" end
+  def print ({:div, e1, e2}) do "(#{print(e1)} / #{print(e2)})" end
 
 end
