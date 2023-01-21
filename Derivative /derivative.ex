@@ -9,6 +9,9 @@ defmodule Deriv do
   | {:div, expr(), expr()}
   | {:exp, expr(), literal()}
   | {:ln, expr()}
+  | {:sqrt, expr()}
+  | {:sin, expr()}
+  | {:cos, expr()}
 
   def test_add() do
     e = {:add,
@@ -25,8 +28,20 @@ defmodule Deriv do
     IO.write("Calculated when x = #{x} --> #{pretty_print(simplify(c))}\n")
   end
 
+  def test_mul() do
+    e = {:mul, {:var, :x}, {:num, 4}}
+    #Derive with respect to x
+    d =  deriv(e, :x)
+    x = 5
+    c = calc(d, :x, x)
+    IO.write("Expression --> #{pretty_print(e)}\n")
+    IO.write("Derivative --> #{pretty_print(d)}\n")
+    IO.write("Simplified --> #{pretty_print(simplify(d))}\n")
+    IO.write("Calculated when x = #{x} --> #{pretty_print(simplify(c))}\n")
+  end
+
   def test_exp() do
-    e = {:exp, {:var, :x}, {:num, -1}}
+    e =  {:mul, {:num, 4}, {:exp, {:var, :x}, {:num, -1}}}
 
     #Derive with respect to x
     d =  deriv(e, :x)
@@ -50,7 +65,7 @@ defmodule Deriv do
 
   def test_div() do
 
-    e = {:div, 1, {:add, {:num, 5}, {:var, :x}}}
+    e = {:div, 1, {:mul, {:num, 4}, {:var, :x}}}
 
     #Derive with respect to x
     d =  deriv(e, :x)
@@ -64,6 +79,32 @@ defmodule Deriv do
   def test_div2() do
 
     e = {:div, 1, {:exp, {:var, :x}, {:num, 2}}}
+
+    #Derive with respect to x
+    d =  deriv(e, :x)
+
+    IO.inspect(d)
+
+    IO.write("Derivative --> #{pretty_print(d)}\n")
+    IO.write("Simplified --> #{pretty_print(simplify(d))}\n")
+  end
+
+  def test_sqrt() do
+
+    e = {:sqrt, {:var, :x}}
+
+    #Derive with respect to x
+    d =  deriv(e, :x)
+
+    IO.inspect(d)
+
+    IO.write("Derivative --> #{pretty_print(d)}\n")
+    IO.write("Simplified --> #{pretty_print(simplify(d))}\n")
+  end
+
+  def test_sin() do
+
+    e = {:sin, {:var, :x}}
 
     #Derive with respect to x
     d =  deriv(e, :x)
@@ -113,6 +154,12 @@ defmodule Deriv do
 
   #f(x) = ln(x) --> f'(x) = 1/x & f´(g(x)) = f´(g(x)) * g´(x) (chain rule if x is an expression instead of a variable)
   def deriv({:ln, e}, v) do {:mul, {:div, {:num, 1}, e}, deriv(e, v)} end
+
+  #f(x) = √x <--> f(x) = x^1/2 --> f´(x) = 1/2 * x ^ -1/2
+  def deriv({:sqrt, e}, v) do deriv({:exp, e, {:num, 1/2}}, v) end
+
+  #f(x) = sin(x) --> f´(x) = cos(x) & f´(g(x)) = f´(g(x)) * g´(x) (chain rule if x is an expression instead of a variable)
+  def deriv({:sin, e}, v) do {:mul, {:cos, e}, deriv(e, v)} end
 
 
   #Extra
@@ -180,5 +227,7 @@ defmodule Deriv do
   def pretty_print ({:mul, e1, e2}) do "#{pretty_print(e1)} * #{pretty_print(e2)}" end
   def pretty_print ({:exp, e1, e2}) do "(#{pretty_print(e1)} ^ (#{pretty_print(e2)}))" end
   def pretty_print ({:div, e1, e2}) do "(#{pretty_print(e1)} / #{pretty_print(e2)})" end
+  def pretty_print ({:sin, e}) do "sin(#{pretty_print(e)})" end
+  def pretty_print ({:cos, e}) do "cos(#{pretty_print(e)})" end
 
 end
