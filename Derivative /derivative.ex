@@ -137,7 +137,7 @@ defmodule Deriv do
       {:mul, e1, deriv(e2, v)}}
   end
 
-  #f´(u^n) = n * u^n - 1 * u´ (General power rule)
+  #f´(u^n) = n * u^(n - 1) * u´ (General power rule)
   def deriv({:exp, e, {:num, n}}, v) do
     {:mul,
       {:mul, {:num, n}, {:exp, e, {:num, n-1}}},
@@ -151,7 +151,7 @@ defmodule Deriv do
   #f(x) = ln(x) --> f'(x) = 1/x & f´(g(x)) = f´(g(x)) * g´(x) (chain rule if x is an expression instead of a variable)
   def deriv({:ln, e}, v) do {:mul, {:div, {:num, 1}, e}, deriv(e, v)} end
 
-  #f(x) = √x <--> f(x) = x^1/2 --> f´(x) = 1/2 * x ^ -1/2, uses the chain rule in the definition of the exponent derivative above
+  #f(x) = √x <--> f(x) = x^1/2 --> General power rule
   def deriv({:sqrt, e}, v) do deriv({:exp, e, {:num, 1/2}}, v) end
 
   #f(x) = sin(x) --> f´(x) = cos(x) & f´(g(x)) = f´(g(x)) * g´(x) (chain rule if x is an expression instead of a variable)
@@ -209,8 +209,8 @@ defmodule Deriv do
 
   def simplify_exp(_, {:num, 0}) do {:num, 1} end
   def simplify_exp(e, {:num, 1}) do e end
-  def simplify_exp(e, {:num, 0.5}) do {:sqrt, e} end
-  def simplify_exp(e, {:num, -0.5}) do {:div, {:num,  1}, {:sqrt, e}} end
+  def simplify_exp(_, {:num, 0.5}) do {:sqrt, e} end
+  def simplify_exp(_, {:num, -0.5}) do {:div, {:num,  1}, {:sqrt, e}} end
   def simplify_exp({:num, n1}, {:num, n2}) do {:num, :math.pow(n1,n2)} end
   def simplify_exp(e1, e2) do {:exp, e1, e2} end
 
