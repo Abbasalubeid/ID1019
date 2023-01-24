@@ -28,23 +28,23 @@ defmodule EnvList do
 
   def bench(i, n) do
     seq = Enum.map(1..i, fn(_) -> :rand.uniform(i) end)
-    list = Enum.reduce(seq, EnvList.new(), fn(e, list) ->
-    EnvList.add(list, e, :foo)
+    list = Enum.reduce(seq, new(), fn(e, list) ->
+    add(list, e, :foo)
     end)
     seq = Enum.map(1..n, fn(_) -> :rand.uniform(i) end)
     {add, _} = :timer.tc(fn() ->
     Enum.each(seq, fn(e) ->
-    EnvList.add(list, e, :foo)
+    add(list, e, :foo)
               end)
             end)
     {lookup, _} = :timer.tc(fn() ->
     Enum.each(seq, fn(e) ->
-    EnvList.lookup(list, e)
+    lookup(list, e)
             end)
           end)
     {remove, _} = :timer.tc(fn() ->
     Enum.each(seq, fn(e) ->
-    EnvList.remove(e, list)
+    remove(e, list)
             end)
           end)
     {i, add, lookup, remove}
