@@ -18,4 +18,16 @@ defmodule EnvTree do
     end
   end
 
+  def lookup(_, :nil) do :not_found end
+
+  def lookup(key, {:node, key, value, _, _}) do {:value, value} end
+
+  def lookup(key, {:node, k, _, left, right}) do
+    if key < k do
+      lookup(key, left)
+    else
+      lookup(key, right)
+    end
+  end
+
 end
