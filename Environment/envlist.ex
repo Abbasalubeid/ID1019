@@ -57,7 +57,7 @@ defmodule EnvList do
     Enum.each(ls, fn (i) ->
     {i, tla, tll, tlr} = bench(i, n)
     :io.format("~6.w~12.2f~12.2f~12.2f\n", [i, tla/n, tll/n, tlr/n])
-    end)
-    end
+            end)
+  end
 
 end
