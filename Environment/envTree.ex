@@ -4,6 +4,8 @@ defmodule EnvTree do
 
   # treeExample() :: {:node, :rootValue, {:leaf, :b} {:leaf, :c}}
 
+  def new() do nil end
+
   def member(_, :nil) do :no end
   def member(elem, {:leaf, elem}) do :yes end
   def member(_, {:leaf, _}) do :no end
@@ -38,18 +40,16 @@ defmodule EnvTree do
     {:node, k, v, left, add(right, key, value)}
   end
 
-  def lookup(_, :nil) do :not_found end
+  def lookup(nil, _) do nil end
 
-  def lookup(key, {:node, key, value, _, _}) do  value end
+  #Found
+  def lookup({:node, key, value, _, _}, key) do value end
 
-  #Since the key is sorted, we can choose to go left or right depending on 'key'
-  def lookup(key, {:node, k, _, left, right}) do
-    if key < k do
-      lookup(key, left)
-    else
-      lookup(key, right)
-    end
-  end
+  #The tree is sorted so if the key is less then the current root, go left
+  def lookup({:node, k, _, left, _}, key) when key < k do lookup(left, key) end
+
+  #If none of the above matches, key is to the right
+  def lookup({:node, _, _, _, right}, key) do lookup(right, key) end
 
   def remove(nil, _) do :nil end
 
@@ -84,57 +84,6 @@ defmodule EnvTree do
   def leftmost({:node, k, v, left, right}) do
     last = leftmost(left)
     {elem(last, 0), elem(last, 1), {:node, k, v, elem(last, 2), right}}
-  end
-
-  def bench(n) do
-
-    ls = [16,32,64,128,256,512,1024,2*1024,4*1024,8*1024]
-    :io.format("# benchmark of map as a list and as a tree (loop: ~w) \n", [n])
-    :io.format("~6.s~8.s~-36.s~-36.s~-36.s\n", ["n", "", "add", "lookup", "remove"])
-    :io.format("~18.s~12.s~12.s~12.s~12.s~12.s~12.s~12.s~12.s\n", ["list", "tree", "map", "list", "tree", "map", "list", "tree", "map"])
-    Enum.each(ls, fn (i) ->
-      {i, tla, tta, tma, tll, ttl, tml, tlr, ttr, tmr} = bench(i, n)
-      :io.format("~6.w~12.2f~12.2f~12.2f~12.2f~12.2f~12.2f~12.2f~12.2f~12.2f\n", [i,tla/(i*n), tta/(i*n), tma/(i*n), tll/(i*n), ttl/(i*n), tml/(i*n), tlr/(i*n), ttr/(i*n), tmr/(i*n)])
-    end)
-
-    :ok
-  end
-
-  def bench(i, n) do
-    seq = Enum.map(1..i, fn(_) -> :rand.uniform(i) end)
-
-    {tla, tll, tlr}  = bench(seq, n, &EnvList.new/0, &EnvList.add/3, &EnvList.lookup/2, &EnvList.remove/2)
-    {tta, ttl, ttr}  = bench(seq, n, &EnvTree.new/0, &EnvTree.add/3, &EnvTree.lookup/2, &EnvTree.remove/2)
-    {tma, tml, tmr}  = bench(seq, n, &Map.new/0, &Map.put/3, &Map.get/2, &Map.delete/2)
-
-    {i, tla, tta, tma, tll, ttl, tml, tlr, ttr, tmr}
-  end
-
-
-  def bench(seq, n, f_new, f_add, f_lookup, f_remove) do
-    {add, map} = time(seq, n, f_new.(), fn(seq, map) ->
-                                 Enum.reduce(seq, map, fn(e, acc) ->
-                                   f_add.(acc, e, :foo)
-				 end)
-    end)
-  {lookup, _} = time(seq, n, map, fn(seq, map) ->
-                                 Enum.each(seq, fn(e) ->
-                                   f_lookup.(map, e)
-				 end)
-      map
-    end)
-
-  {remove, _} = time(seq, n, map, fn(seq, map) ->
-                                 Enum.reduce(seq, map, fn(e, acc) ->
-                                      f_remove.(acc, e) end)
-  end)
-
-  {add, lookup, remove}
-  end
-
-
-  def time(seq, n, map, f) do
-    :timer.tc(fn () -> Enum.reduce(1..n, map, fn(_, map) -> f.(seq, map) end) end)
   end
 
 end
