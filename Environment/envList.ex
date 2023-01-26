@@ -56,6 +56,7 @@ defmodule EnvList do
     :io.format("~6.s~13.s~17.s~16.s\n", ["n", "add", "lookup", "remove"])
     Enum.each(ls, fn (i) ->
     {i, tla, tll, tlr} = bench(i, n)
+    #Format to put in a tex table
     :io.format("~6.w &~12.2f & ~12.2f & ~12.2f \\\\ \n", [i, tla/n, tll/n, tlr/n])
             end)
   end
