@@ -32,27 +32,30 @@ defmodule EnvList do
     add(list, e, :foo)
     end)
     seq = Enum.map(1..n, fn(_) -> :rand.uniform(i) end)
-    {add, _} = :timer.tc(fn() ->
+    start_time = :erlang.monotonic_time()
     Enum.each(seq, fn(e) ->
     add(list, e, :foo)
-              end)
-            end)
-    {lookup, _} = :timer.tc(fn() ->
+    end)
+    add_time = :erlang.monotonic_time() - start_time
+
+    start_time = :erlang.monotonic_time()
     Enum.each(seq, fn(e) ->
     lookup(list, e)
-            end)
-          end)
-    {remove, _} = :timer.tc(fn() ->
+    end)
+    lookup_time = :erlang.monotonic_time() - start_time
+
+    start_time = :erlang.monotonic_time()
     Enum.each(seq, fn(e) ->
     remove(e, list)
-            end)
-          end)
-    {i, add, lookup, remove}
+    end)
+    remove_time = :erlang.monotonic_time() - start_time
+
+    {i, add_time, lookup_time, remove_time}
   end
 
   def bench(n) do
     ls = [16,32,64,128,256,512,1024,2*1024,4*1024,8*1024]
-    :io.format("# benchmark with ~w operations, time per operation in us\n", [n])
+    :io.format("# benchmark with ~w operations, time per operation in ns\n", [n])
     :io.format("~6.s~13.s~17.s~16.s\n", ["n", "add", "lookup", "remove"])
     Enum.each(ls, fn (i) ->
     {i, tla, tll, tlr} = bench(i, n)
