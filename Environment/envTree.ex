@@ -111,10 +111,10 @@ defmodule EnvTree do
   def bench(n) do
     ls = [16,32,64,128,256,512,1024,2*1024,4*1024,8*1024]
     :io.format("# benchmark with ~w operations, time per operation in us\n", [n])
-    :io.format("~6.s~12.s~12.s~12.s\n", ["n", "add", "lookup", "remove"])
+    :io.format("~6.s~13.s~17.s~16.s\n", ["n", "add", "lookup", "remove"])
     Enum.each(ls, fn (i) ->
     {i, tla, tll, tlr} = bench(i, n)
-    :io.format("~6.w~12.2f~12.2f~12.2f\n", [i, tla/n, tll/n, tlr/n])
+    :io.format("~6.w &~12.2f & ~12.2f & ~12.2f \\\\ \n", [i, tla/n, tll/n, tlr/n])
             end)
   end
 
