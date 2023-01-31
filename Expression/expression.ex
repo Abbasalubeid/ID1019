@@ -23,12 +23,28 @@ defmodule Expression do
     sub(eval(e1, env), eval(e2, env))
   end
 
+  def eval({:mul, e1, e2}, env) do
+    mul(eval(e1, env), eval(e2, env))
+  end
+
+  def eval({:div, e1, e2}, env) do
+    divide(eval(e1, env), eval(e2, env))
+  end
+
   def add(e1, e2) do
     e1 + e2
   end
 
   def sub(e1, e2) do
     e1 - e2
+  end
+
+  def mul(e1, e2) do
+    e1 * e2
+  end
+
+  def divide(e1, e2) do
+    e1 / e2
   end
 
 
