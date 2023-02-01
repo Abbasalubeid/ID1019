@@ -21,8 +21,7 @@ defmodule Expression do
     divide(eval(e1, env), eval(e2, env))
   end
 
-  def eval({:q, n1, n2}, _) do {:q, n1, n2} end
-
+  def eval({:q, n1, n2}, _) do {:q, n1, n2}  end
 
   def add({:q, n1, m1}, {:q, n2, m2}) do
     temp1 = m1 * m2
@@ -31,11 +30,7 @@ defmodule Expression do
     numerator = temp2 / Integer.gcd(temp1, temp2)
     denominator = round(denominator)
     numerator = round(numerator)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
+    {:q, numerator, denominator}
   end
 
   def add({:q, n1, m1}, e) do
@@ -44,11 +39,7 @@ defmodule Expression do
     numerator = n1 + temp1
     denominator = round(denominator)
     numerator = round(numerator)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
+    {:q, numerator, denominator}
   end
 
   def add(e, {:q, n1, m1}) do
@@ -57,11 +48,7 @@ defmodule Expression do
     numerator = n1 + temp1
     denominator = round(denominator)
     numerator = round(numerator)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
+    {:q, numerator, denominator}
   end
 
   def add(e1, e2) do
@@ -75,11 +62,7 @@ defmodule Expression do
     numerator = temp2 / Integer.gcd(temp1, temp2)
     denominator = round(denominator)
     numerator = round(numerator)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
+    {:q, numerator, denominator}
   end
 
   def sub(e, {:q, n1, m1}) do
@@ -88,11 +71,7 @@ defmodule Expression do
     numerator = temp1 - n1
     denominator = round(denominator)
     numerator = round(numerator)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
+    {:q, numerator, denominator}
   end
 
   def sub({:q, n1, m1}, e) do
@@ -101,11 +80,7 @@ defmodule Expression do
     numerator = n1 - temp1
     denominator = round(denominator)
     numerator = round(numerator)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
+    {:q, numerator, denominator}
   end
 
 
@@ -122,11 +97,7 @@ defmodule Expression do
 
     denominator = round(denominator)
     numerator = round(numerator)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
+    {:q, numerator, denominator}
   end
 
   def mul({:q, n1, m1}, e) do
@@ -136,11 +107,7 @@ defmodule Expression do
 
     denominator = round(denominator)
     numerator = round(numerator)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
+    {:q, numerator, denominator}
   end
 
   def mul(e, {:q, n1, m1}) do
@@ -150,11 +117,7 @@ defmodule Expression do
 
     denominator = round(denominator)
     numerator = round(numerator)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
+    {:q, numerator, denominator}
   end
 
   def mul(e1, e2) do
@@ -170,11 +133,7 @@ defmodule Expression do
 
     denominator = round(denominator)
     numerator = round(numerator)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
+    {:q, numerator, denominator}
   end
 
   def divide({:q, n1, m1}, e) do
@@ -185,11 +144,7 @@ defmodule Expression do
 
     denominator = round(denominator)
     numerator = round(numerator)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
+    {:q, numerator, denominator}
   end
 
   def divide(e, {:q, n1, m1}) do
@@ -200,32 +155,16 @@ defmodule Expression do
 
     denominator = round(denominator)
     numerator = round(numerator)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
+    {:q, numerator, denominator}
   end
 
   def divide(e1, e2) do
     answer = e1 / e2
-    if is_integer(answer) do
+    if is_integer(rem(answer, 1) == 0) do
       answer
     else
-      print(e1, e2)
+      {:q, e1, e2}
     end
   end
-
-  def print(e1, e2) do
-    gcd = Integer.gcd(e1, e2)
-    numerator = round(e1/gcd)
-    denominator = round(e2/gcd)
-    if denominator == 1 do
-      IO.puts(numerator)
-    else
-      IO.puts("#{numerator} / #{denominator}")
-    end
-  end
-
 
 end
