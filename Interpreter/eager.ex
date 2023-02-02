@@ -42,7 +42,7 @@ defmodule Eager do
     case Env.lookup(v, env) do
       nil ->
         {:ok, Env.add(v, str, env)}
-      #The exact same values as the parameters, not only the same pattern
+      #Not only the same pattern, but the exact same values as the parameters
       {^v, ^str} ->
         {:ok, env}
 
