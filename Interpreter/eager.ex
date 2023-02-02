@@ -17,17 +17,17 @@ defmodule Eager do
 
   #Compound expression, evaluate the first variable and then the other,
   #only if the first is != error/bottoms
-  def eval_expr({:cons, var1, var2}, env) do
-    case eval_expr(var1, env) do
+  def eval_expr({:cons, he, te}, env) do
+    case eval_expr(he, env) do
       :error ->
         :error
 
-      {:ok, val1} ->
-        case eval_expr(var2, env) do
+      {:ok, hs} ->
+        case eval_expr(te, env) do
           :error ->
             :error
-          {:ok, val2} ->
-            {:ok, {val1 , val2}}
+          {:ok, ts} ->
+            {:ok, {hs , ts}}
         end
     end
   end
@@ -54,13 +54,13 @@ defmodule Eager do
   end
 
   #Match the first expression
-  def eval_match({:cons, var1, var2}, {s1, s2}, env) do
-    case eval_match(var1, s1, env) do
+  def eval_match({:cons, hp, tp}, {hs, ts}, env) do
+    case eval_match(hp, hs, env) do
       :fail ->
         :fail
-      #Match the second expression with the new env
+
       {:ok, env} ->
-        eval_match(var2, s2, env)
+        eval_match(tp, ts, env)
     end
   end
 
