@@ -21,7 +21,6 @@ defmodule Eager do
     case eval_expr(he, env) do
       :error ->
         :error
-
       {:ok, hs} ->
         case eval_expr(te, env) do
           :error ->
@@ -43,7 +42,7 @@ defmodule Eager do
     case Env.lookup(v, env) do
       nil ->
         {:ok, Env.add(v, str, env)}
-      #The exact same va
+      #The exact same values as the parameters, not only the same pattern
       {^v, ^str} ->
         {:ok, env}
 
