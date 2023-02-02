@@ -43,8 +43,7 @@ defmodule Eager do
       nil ->
         {:ok, Env.add(v, str, env)}
       #Not only the same pattern, but the exact same values as the parameters
-      {^v, ^str} ->
-        {:ok, env}
+      {^v, ^str} -> {:ok, env}
 
       #Anything else gives a wrong env
       {_, _} ->
