@@ -7,7 +7,7 @@ defmodule Eager do
   def eval_expr({:var, id}, env) do
     case Env.lookup(id, env) do
       nil ->
-	      IO.puts("variable binding for #{id} not present")
+	      IO.puts("Nothing is mapped to #{id}")
         :error
 
       {_, str} ->
@@ -67,6 +67,15 @@ defmodule Eager do
   #If we can not match thr pattern to the structure, we fail
   def eval_match(_, _, _) do
     :fail
+  end
+
+  #If it is a variable, add it to the list
+  def extract_vars(pattern) do extract_vars(pattern, []) end
+  def extract_vars({:atm, _}, vars) do vars end
+  def extract_vars(:ignore, vars) do vars end
+  def extract_vars({:var, var}, vars) do [var | vars]end
+  def extract_vars({:cons, head, tail}, vars) do
+    extract_vars(tail, extract_vars(head, vars))
   end
 
 
