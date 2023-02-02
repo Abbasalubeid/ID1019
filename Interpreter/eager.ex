@@ -64,6 +64,11 @@ defmodule Eager do
     end
   end
 
+  #If we can not match thr pattern to the structure, we fail
+  def eval_match(_, _, _) do
+    :fail
+  end
+
 
 
 
