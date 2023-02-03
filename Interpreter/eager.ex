@@ -46,19 +46,16 @@ defmodule Eager do
       {^v, ^str} -> {:ok, env}
 
       #Anything else gives a wrong env
-      {_, _} ->
-        :fail
+      {_, _} -> :fail
     end
   end
 
   #Match the first expression
   def eval_match({:cons, hp, tp}, {hs, ts}, env) do
     case eval_match(hp, hs, env) do
-      :fail ->
-        :fail
+      :fail -> :fail
 
-      {:ok, env} ->
-        eval_match(tp, ts, env)
+      {:ok, env} -> eval_match(tp, ts, env)
     end
   end
 
@@ -77,6 +74,39 @@ defmodule Eager do
   end
 
 
+  def eval(seq) do
+    # a new environment is created
+    eval_seq(seq, Env.new())
+  end
+
+  #A new scope is returned without bindings for the variables in the pattern
+  def eval_scope(pattern, env) do
+    Env.remove(extract_vars(pattern), env)
+  end
+
+  #If it is an expression
+  def eval_seq([exp], env) do
+    eval_expr(exp, env)
+  end
+
+  #If it is a pattern matching expression
+  def eval_seq([{:match, ptr, exp} | seq], env) do
+    case eval_expr(exp, env) do
+      :error ->
+        :error
+
+      {:ok, str} ->
+        env = eval_scope(ptr, env)
+
+        case eval_match(ptr, str, env) do
+          :fail ->
+            :error
+
+          {:ok, env} ->
+            eval_seq(seq, env)
+        end
+    end
+  end
 
 
 
