@@ -31,4 +31,7 @@ defmodule Higher do
   def apply_to_all([], _) do [] end
   def apply_to_all([first | rest], fun) do [fun.(first) | apply_to_all(rest, fun)] end
 
+  def sum([]) do 0 end
+  def sum([first | rest]) do first + sum(rest) end
+
 end
