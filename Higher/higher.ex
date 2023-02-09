@@ -39,4 +39,13 @@ defmodule Higher do
     f.(first, fold_right(rest, base, f))
   end
 
+  def fold_left([], base, _) do base end
+  def fold_left([first | rest], base, f) do
+    fold_left(rest, f.(first, base), f)
+  end
+
+
+
+
+
 end
