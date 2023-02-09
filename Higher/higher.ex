@@ -29,9 +29,14 @@ defmodule Higher do
   end
 
   def apply_to_all([], _) do [] end
-  def apply_to_all([first | rest], fun) do [fun.(first) | apply_to_all(rest, fun)] end
+  def apply_to_all([first | rest], f) do [f.(first) | apply_to_all(rest, f)] end
 
   def sum([]) do 0 end
   def sum([first | rest]) do first + sum(rest) end
+
+  def fold_right([], base, _) do base end
+  def fold_right([first | rest], base, f) do
+    f.(first, fold_right(rest, base, f))
+  end
 
 end
