@@ -61,8 +61,4 @@ defmodule Higher do
     end
   end
 
-
-
-
-
 end
