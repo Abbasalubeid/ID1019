@@ -14,4 +14,18 @@ defmodule Higher do
     end
   end
 
+  def double_five_animal([], _) do [] end
+  def double_five_animal([first | rest], atom) do
+    case atom do
+    :double -> [2 * first | double(rest)]
+    :five -> [first + 5 | five(rest)]
+    :animal ->
+      if first == :dog do
+        [:fido | animal(rest)]
+      else
+        [first | animal(rest)]
+      end
+    end
+  end
+
 end
