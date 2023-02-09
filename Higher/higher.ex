@@ -17,15 +17,18 @@ defmodule Higher do
   def double_five_animal([], _) do [] end
   def double_five_animal([first | rest], atom) do
     case atom do
-    :double -> [2 * first | double(rest)]
-    :five -> [first + 5 | five(rest)]
+    :double -> [2 * first | double_five_animal(rest, :double)]
+    :five -> [first + 5 | double_five_animal(rest, :five)]
     :animal ->
       if first == :dog do
-        [:fido | animal(rest)]
+        [:fido | double_five_animal(rest, :animal)]
       else
-        [first | animal(rest)]
+        [first | double_five_animal(rest, :animal)]
       end
     end
   end
+
+  def apply_to_all([], _) do [] end
+  def apply_to_all([first | rest], fun) do [fun.(first) | apply_to_all(rest, fun)] end
 
 end
