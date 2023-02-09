@@ -6,4 +6,12 @@ defmodule Higher do
   def five([]) do [] end
   def five([first | rest]) do [first + 5 | five(rest)] end
 
+  def animal([]) do [] end
+  def animal(([first | rest])) do
+    case first do
+      :dog -> [:fido | animal(rest)]
+      _ -> [first | animal(rest)]
+    end
+  end
+
 end
