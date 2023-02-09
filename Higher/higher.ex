@@ -53,6 +53,14 @@ defmodule Higher do
     end
   end
 
+  def filter([], _) do [] end
+  def filter([first | last], f) do
+    case f.(first) do
+      true -> [first | filter(last, f)]
+      false ->  filter(last, f)
+    end
+  end
+
 
 
 
