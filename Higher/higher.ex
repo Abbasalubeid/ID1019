@@ -44,6 +44,15 @@ defmodule Higher do
     fold_left(rest, f.(first, base), f)
   end
 
+  def odd([]) do [] end
+  def odd([first | last]) do
+    if rem(first, 2) == 1 do
+      [first | odd(last)]
+    else
+      odd(last)
+    end
+  end
+
 
 
 
