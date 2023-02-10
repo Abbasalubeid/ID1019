@@ -36,9 +36,6 @@ defmodule Higher do
   def sum([]) do 0 end
   def sum([first | rest]) do first + sum(rest) end
 
-  def mul([]) do 0 end
-  def mul([first | rest]) do first * mul(rest) end
-
   def fold_right([], base, _) do base end
   def fold_right([first | rest], base, f) do
     f.(first, fold_right(rest, base, f))
