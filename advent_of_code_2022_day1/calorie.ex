@@ -1,4 +1,7 @@
 defmodule Calorie do
-  File.read("hello.txt")
 
+  def reader do
+    records = File.read!("input.txt")
+    records
+  end
 end
