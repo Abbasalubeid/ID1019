@@ -1,6 +1,6 @@
 defmodule Calorie do
 
-    def max do
+  def max do
     records = File.read!("input.txt")
     #There is a "\n\n" between each elfs intake
     elves = String.split(records, "\n\n")
