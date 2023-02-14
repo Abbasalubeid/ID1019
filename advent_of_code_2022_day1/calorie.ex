@@ -1,11 +1,12 @@
 defmodule Calorie do
 
-  def reader do
-    records = File.read!("input.txt")
-    #There is a "\n\n" between each elf
-    elfs = String.split(records, "\n\n")
-    elfs
+  def counter([head | tail], calories_per_elf) do
+    #Count each elfs total amount and add it to the list
+    calories_per_elf = calories_per_elf ++ [add(head)]
+    counter(tail, calories_per_elf)
   end
+
+  def counter([], calories_per_elf) do calories_per_elf end
 
   def add(string) do
     #There is a "\n" between each number of calories for one elf
