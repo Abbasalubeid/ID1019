@@ -7,7 +7,15 @@ defmodule Calorie do
     #One number of calories for each elf
     total_list = counter(elves, [])
     #Return the maximum number of calories
-    Enum.max(total_list)
+    IO.puts "Solution for part 1 is #{Enum.max(total_list)}"
+
+    #Sort in descending order to choose the top three
+    descending = Enum.sort(total_list, fn(x, y)-> y<x end)
+    first = Enum.at(descending, 0)
+    second = Enum.at(descending, 1)
+    third = Enum.at(descending, 2)
+    sum_top_three = first + second + third
+    IO.puts "Solution for part 2 is #{sum_top_three}"
   end
 
   def counter([head | tail], calories_per_elf) do
