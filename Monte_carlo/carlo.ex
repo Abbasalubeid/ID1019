@@ -7,4 +7,15 @@ defmodule Carlo do
     :math.pow(r, 2)  >  :math.pow(x, 2) + :math.pow(y, 2)
   end
 
+  #When there is no more darts left, return the accumulator
+  def round(0, _, a) do a end
+  def round(k, r, a) do
+    if dart(r) do
+      #One dart inside, accumulator increments
+      round(k-1, r, a+1)
+    else
+      round(k-1, r, a)
+    end
+  end
+
 end
