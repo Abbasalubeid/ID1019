@@ -24,4 +24,17 @@ defmodule Carlo do
     end
   end
 
+  def rounds(k, j, r) do
+    rounds(k, j, 0, r, 0)
+  end
+  #pi = 4 * probability -> 4 * inside/total
+  def rounds(0, _, t, _, a) do 4 * (a/t) end
+  def rounds(k, j, t, r, a) do
+    a = round(j, r, a) #Inside
+    t = t + j #total amount of darts
+    pi = 4 * (a/t)
+    :io.format("Pi= ~f\t :math.pi= ~f\t Diff = ~f\n~n", [pi, :math.pi(), (pi - :math.pi())])
+    rounds(k-1, j, t, r, a)
+  end
+
 end
