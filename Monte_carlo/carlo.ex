@@ -1,5 +1,11 @@
 defmodule Carlo do
 
+  def pi(rounds, radius) do
+    inside = round(rounds, radius, 0)
+    prob = inside / rounds
+    4 * prob
+  end
+
   def dart(r) do
     x = Enum.random(0..r)
     y = Enum.random(0..r)
