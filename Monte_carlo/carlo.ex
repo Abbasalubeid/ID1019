@@ -35,7 +35,7 @@ defmodule Carlo do
     a = round(j, r, a) #Inside
     t = t + j #total amount of darts
     pi = 4 * (a/t)
-    :io.format("Pi= ~.7f\t from_:math.pi= ~f\t from_Archimedes= ~f\t from_Zu = ~f\n~n",
+    :io.format("Pi= ~.8f\t from_:math.pi= ~f\t from_Archimedes= ~f\t from_Zu = ~f\n~n",
       [pi, (pi - :math.pi()), (pi - 22/7), (pi - 355/113)])
     rounds(k-1, j, t, r, a)
   end
