@@ -18,6 +18,16 @@ defmodule Chopstick do
     end
   end
 
+  #Abstraction
+  def request(stick) do
+    #Send the current process and wait for a confirmation msg
+    send(stick, {:request, self()})
+    receive do
+      :granted -> :ok
+      end
+    end
+  end
+
 
 
 
