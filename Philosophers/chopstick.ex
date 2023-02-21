@@ -6,7 +6,10 @@ defmodule Chopstick do
 
   def available() do
     receive do
-      {:request, from} -> gone()
+      {:request, from} ->
+        #Confirmation
+        send(from, :granted)
+        gone()
       :quit -> :ok
     end
   end
