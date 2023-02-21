@@ -36,8 +36,4 @@ defmodule Chopstick do
     send(stick, {:quit, self()})
   end
 
-
-
-
-
 end

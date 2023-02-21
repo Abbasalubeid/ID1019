@@ -1,0 +1,4 @@
+defmodule Philosopher do
+
+
+end
