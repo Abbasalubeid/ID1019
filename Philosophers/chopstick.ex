@@ -27,8 +27,13 @@ defmodule Chopstick do
     send(stick, {:request, self()})
     receive do
       :granted -> :ok
-      end
     end
+  end
+  def return(stick) do
+    send(stick, {:return, self()})
+  end
+  def quit(stick) do
+    send(stick, {:quit, self()})
   end
 
 
