@@ -5,6 +5,8 @@ defmodule Philosopher do
     :timer.sleep(:rand.uniform(t))
   end
 
+  def start(hunger, right, left, name, ctrl) do
 
+  end
 
 end
