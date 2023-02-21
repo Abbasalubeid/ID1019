@@ -1,4 +1,5 @@
 defmodule Chopstick do
+
   def start do
     stick = spawn_link(fn -> available() end)
     end
@@ -7,7 +8,14 @@ defmodule Chopstick do
     receive do
       {:request, from} -> gone()
       :quit -> :ok
-      end
+    end
+  end
+
+  def gone() do
+    receive do
+      ... -> ...
+      :quit -> :ok
+    end
   end
 
 
