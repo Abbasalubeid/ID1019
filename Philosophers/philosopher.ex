@@ -6,7 +6,7 @@ defmodule Philosopher do
   end
 
   def start(hunger, right, left, name, ctrl) do
-
+    spawn_link(fn -> dreaming(hunger, left, right, name, ctrl) end)
   end
 
 end
