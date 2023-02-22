@@ -32,15 +32,12 @@ defmodule Philosopher do
       :ok ->
         IO.puts("#{name} received both chopsticks")
         eating(hunger, left, right, name, ctrl)
-      _ ->
-        IO.puts("#{name} did not receive chopsticks")
-        dream(hunger, left, right, name, ctrl)
     end
   end
 
   #Eat and then return the chopsticks
   def eating(hunger, left, right, name, ctrl) do
-    sleep(500)
+    sleep(200)
     IO.puts("#{name} ate")
 
     Chopstick.return(left)
