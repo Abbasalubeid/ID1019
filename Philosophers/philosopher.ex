@@ -9,4 +9,12 @@ defmodule Philosopher do
     spawn_link(fn -> dreaming(hunger, left, right, name, ctrl) end)
   end
 
+  #Not hungry
+  def dreaming(0, _, _, name, ctrl) do
+    IO.puts("#{name} is dreaming and is full")
+    sleep(1000)
+    send(self(), :full)
+    send(ctrl, :done)
+  end
+
 end
