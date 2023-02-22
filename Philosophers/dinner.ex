@@ -19,6 +19,7 @@ defmodule Dinner do
 
   def wait(0, chopsticks) do
     Enum.each(chopsticks, fn(c) -> Chopstick.quit(c) end)
+    IO.puts("Everyone is full!")
   end
   def wait(n, chopsticks) do
     receive do
