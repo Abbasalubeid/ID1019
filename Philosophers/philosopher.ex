@@ -16,5 +16,22 @@ defmodule Philosopher do
     send(self(), :full)
     send(ctrl, :done)
   end
+  #
+  def dreaming(hunger, left, right, name, ctrl) do
+    IO.puts("#{name} is dreaming")
+    sleep(1000)
+
+    IO.puts("#{name} stoped dreaming")
+    wait(hunger, left, right, name, ctrl)
+  end
+
+  def wait(hunger, left, right, name, ctrl) do
+    IO.puts("#{name} is waiting to eat with #{hunger} hunger left")
+
+    case Chopstick.request(left, 1000) && Chopstick.request(right, 1000) do
+      :ok ->
+        IO.puts("#{name} got both sticks")
+        eating(hunger, left, right, name, ctrl)
+      end
 
 end
