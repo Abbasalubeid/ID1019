@@ -31,6 +31,6 @@ defmodule Philosopher do
       :ok ->
         IO.puts("#{name} received both chopsticks")
         eating(hunger, left, right, name, ctrl)
-    end
+  end
 
 end
