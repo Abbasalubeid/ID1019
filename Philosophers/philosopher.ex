@@ -16,7 +16,7 @@ defmodule Philosopher do
     send(self(), :full)
     send(ctrl, :done)
   end
-  #
+  #Dream for a while, then request chopsticks
   def dream(hunger, left, right, name, ctrl) do
     IO.puts("#{name} is dreaming")
     sleep(1000)
@@ -25,16 +25,21 @@ defmodule Philosopher do
     wait(hunger, left, right, name, ctrl)
   end
 
+  #Request chopsticks and dream again if they are not received
   def wait(hunger, left, right, name, ctrl) do
     IO.puts("#{name} is waiting to eat with #{hunger} hunger left")
     case Chopstick.request(left, 1000) && Chopstick.request(right, 1000) do
       :ok ->
         IO.puts("#{name} received both chopsticks")
         eating(hunger, left, right, name, ctrl)
+      _ ->
+        IO.puts("#{name} did not receive chopsticks")
+        dream(hunger, left, right, name, ctrl)
   end
 
+  #Eat and then return the chopsticks
   def eating(hunger, left, right, name, ctrl) do
-    sleep(200)
+    sleep(500)
     IO.puts("#{name} ate")
 
     Chopstick.return(left)
