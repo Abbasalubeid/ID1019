@@ -1,7 +1,7 @@
 defmodule Chopstick do
 
   def start do
-    stick = spawn_link(fn -> available() end)
+    spawn_link(fn -> available() end)
   end
 
   def available() do
