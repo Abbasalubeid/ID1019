@@ -17,4 +17,16 @@ defmodule Dinner do
     wait(5, [c1, c2, c3, c4, c5])
   end
 
+  def wait(0, chopsticks) do
+    Enum.each(chopsticks, fn(c) -> Chopstick.quit(c) end)
+  end
+  def wait(n, chopsticks) do
+    receive do
+      :done ->
+        wait(n - 1, chopsticks)
+      :abort ->
+        Process.exit(self(), :kill)
+    end
+  end
+
 end
