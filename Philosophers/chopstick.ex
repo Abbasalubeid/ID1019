@@ -35,10 +35,10 @@ defmodule Chopstick do
   end
 
   def return(stick) do
-    send(stick, {:return, self()})
+    send(stick, :return)
   end
   def quit(stick) do
-    send(stick, {:quit, self()})
+    send(stick, :quit)
   end
 
 end
