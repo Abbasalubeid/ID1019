@@ -35,6 +35,7 @@ defmodule Philosopher do
       _ ->
         IO.puts("#{name} did not receive chopsticks")
         dream(hunger, left, right, name, ctrl)
+    end
   end
 
   #Eat and then return the chopsticks
