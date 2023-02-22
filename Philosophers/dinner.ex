@@ -30,4 +30,23 @@ defmodule Dinner do
     end
   end
 
+  # def bench(p, n) do
+  #   sticks = create_chop(n, [Chopstick.start()])
+  #   create_philo(n, sticks, name, ctrl)
+  #   wait(n, sticks)
+  #   :io.format("~w philosophers eating ~w times operations, time per operation in ns\n", [p,n])
+  #   :io.format("~6.s~13.s~17.s~16.s\n", ["Philosophers", "n", "time"])
+  # end
+
+  def create_chop(0, arr) do arr end
+  def create_chop(n, arr) do
+    create_chop(n-1, arr ++ [Chopstick.start()])
+  end
+
+  def create_philo(n, sticks, name, ctrl) do
+
+  end
+
+
+
 end
