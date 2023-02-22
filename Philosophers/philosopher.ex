@@ -46,7 +46,7 @@ defmodule Philosopher do
     Chopstick.return(left)
     Chopstick.return(right)
 
-    dreaming(hunger - 1, left, right, name, ctrl)
+    dream(hunger - 1, left, right, name, ctrl)
   end
 
 end
