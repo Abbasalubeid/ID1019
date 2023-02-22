@@ -33,4 +33,14 @@ defmodule Philosopher do
         eating(hunger, left, right, name, ctrl)
   end
 
+  def eating(hunger, left, right, name, ctrl) do
+    sleep(200)
+    IO.puts("#{name} ate")
+
+    Chopstick.return(left)
+    Chopstick.return(right)
+
+    dreaming(hunger - 1, left, right, name, ctrl)
+  end
+
 end
