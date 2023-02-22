@@ -22,13 +22,18 @@ defmodule Chopstick do
   end
 
   #Abstraction
-  def request(stick) do
-    #Send the current process and wait for a confirmation msg
+  def request(stick, timeout) do
     send(stick, {:request, self()})
     receive do
-      :granted -> :ok
+      :granted ->
+        :ok
+    after
+      timeout ->
+        IO.puts("Timeout!")
+        :no
     end
   end
+
   def return(stick) do
     send(stick, {:return, self()})
   end
