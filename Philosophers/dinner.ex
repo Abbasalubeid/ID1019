@@ -19,7 +19,7 @@ defmodule Dinner do
 
   def wait(0, chopsticks) do
     Enum.each(chopsticks, fn(c) -> Chopstick.quit(c) end)
-    IO.puts("Everyone is full!")
+    # IO.puts("Everyone is full!")
   end
   def wait(n, chopsticks) do
     receive do
@@ -30,23 +30,45 @@ defmodule Dinner do
     end
   end
 
-  # def bench(p, n) do
-  #   sticks = create_chop(n, [Chopstick.start()])
-  #   create_philo(n, sticks, name, ctrl)
-  #   wait(n, sticks)
-  #   :io.format("~w philosophers eating ~w times operations, time per operation in ns\n", [p,n])
-  #   :io.format("~6.s~13.s~17.s~16.s\n", ["Philosophers", "n", "time"])
-  # end
+  def bench_start(p), do: spawn(fn -> bench(p) end)
+
+  def bench(p) do
+    k = [2, 4, 8, 16, 32]
+    :io.format("# ~w philosophers eating n times each, time per operation in ms\n", [p])
+    :io.format("~s\t\t~s\n", ["n", "time"])
+    Enum.each(k, fn (i) ->
+      {i, time} = bench(p, i)
+      :io.format("~w \t &\t~.2f  \\\\ \n", [i, time/1000000])
+            end)
+  end
+
+  def bench(p, n) do
+    start_time = :erlang.monotonic_time()
+    sticks = create_chop(p, [])
+    create_philo(p, n, sticks, self(), 0)
+    wait(p, sticks)
+    real_time = :erlang.monotonic_time() - start_time
+    {n, real_time}
+  end
 
   def create_chop(0, arr) do arr end
   def create_chop(n, arr) do
     create_chop(n-1, arr ++ [Chopstick.start()])
   end
 
-  def create_philo(n, sticks, name, ctrl) do
+  def create_philo(0, _, _, _, _) do :ok end
 
+  def create_philo(p, n, sticks, ctrl, k) do
+    if Enum.at(sticks, k+1) != :nil do
+      Philosopher.start(n, Enum.at(sticks, k),
+        Enum.at(sticks, k+1), "#{p}", ctrl)
+    else
+      #The last philosopher shares a stick with the first
+      Philosopher.start(n, Enum.at(sticks, k),
+        Enum.at(sticks, 0), "#{p}", ctrl)
+    end
+
+    create_philo(p-1, n, sticks, ctrl, k+1)
   end
-
-
 
 end
