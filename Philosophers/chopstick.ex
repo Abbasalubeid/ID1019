@@ -29,7 +29,7 @@ defmodule Chopstick do
         :ok
     after
       timeout ->
-        IO.puts("Timeout!")
+        # IO.puts("Timeout!")
         :no
     end
   end
