@@ -31,12 +31,12 @@ defmodule Philosopher do
     case Chopstick.request(left, 1000) && Chopstick.request(right, 1000) do
       :ok ->
         # IO.puts("#{name} received both chopsticks")
-        eating(hunger, left, right, name, ctrl)
+        eat(hunger, left, right, name, ctrl)
     end
   end
 
   #Eat and then return the chopsticks
-  def eating(hunger, left, right, name, ctrl) do
+  def eat(hunger, left, right, name, ctrl) do
     sleep(200)
     # IO.puts("#{name} ate")
 
