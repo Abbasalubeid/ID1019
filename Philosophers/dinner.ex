@@ -34,11 +34,11 @@ defmodule Dinner do
 
   def bench(p) do
     k = [2, 4, 8, 16, 32]
-    :io.format("# ~w philosophers eating n times each, time per operation in ms\n", [p])
+    :io.format("# ~w philosophers eating n times each, time per operation in measured in seconds\n", [p])
     :io.format("~s\t\t~s\n", ["n", "time"])
     Enum.each(k, fn (i) ->
       {i, time} = bench(p, i)
-      :io.format("~w \t &\t~.2f  \\\\ \n", [i, time/1000000])
+      :io.format("~w \t &\t~.2f  \\\\ \n", [i, time/1000000000])
             end)
   end
 
