@@ -33,7 +33,7 @@ defmodule Dinner do
   def bench_start(p), do: spawn(fn -> bench(p) end)
 
   def bench(p) do
-    k = [200, 400, 800, 1600, 3200]
+    k = [2, 4, 8, 16, 32]
     :io.format("# ~w philosophers eating n times each, time per operation in ms\n", [p])
     :io.format("~s\t\t~s\n", ["n", "time"])
     Enum.each(k, fn (i) ->
