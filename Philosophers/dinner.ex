@@ -33,7 +33,7 @@ defmodule Dinner do
   def bench_start(p), do: spawn(fn -> bench(p) end)
 
   def bench(p) do
-    k = [2, 4, 8, 16, 32]
+    k = [200, 400, 800, 1600, 3200]
     :io.format("# ~w philosophers eating n times each, time per operation in ms\n", [p])
     :io.format("~s\t\t~s\n", ["n", "time"])
     Enum.each(k, fn (i) ->
@@ -42,9 +42,15 @@ defmodule Dinner do
             end)
   end
 
+  def hej(t) do
+    IO.puts("1: #{:random.uniform(t)}")
+    IO.puts("2: #{:random.uniform(t)}")
+    IO.puts("3: #{:random.uniform(t)}")
+  end
+
   def bench(p, n) do
-    start_time = :erlang.monotonic_time()
     sticks = create_chop(p, [])
+    start_time = :erlang.monotonic_time()
     create_philo(p, n, sticks, self(), 0)
     wait(p, sticks)
     real_time = :erlang.monotonic_time() - start_time
