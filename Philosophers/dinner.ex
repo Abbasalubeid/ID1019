@@ -42,12 +42,6 @@ defmodule Dinner do
             end)
   end
 
-  def hej(t) do
-    IO.puts("1: #{:random.uniform(t)}")
-    IO.puts("2: #{:random.uniform(t)}")
-    IO.puts("3: #{:random.uniform(t)}")
-  end
-
   def bench(p, n) do
     sticks = create_chop(p, [])
     start_time = :erlang.monotonic_time()
