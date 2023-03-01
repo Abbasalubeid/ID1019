@@ -8,7 +8,7 @@ defmodule Train do
   end
 
   def drop(train, 0) do train end
-  def drop([first | rest ], n) do
+  def drop([ _ | rest ], n) do
     if n > 0 do
       drop(rest, n-1)
     end
@@ -26,5 +26,11 @@ defmodule Train do
     end
   end
 
+  def position([first | last], y) do
+    case first do
+      ^y -> 1
+      _ -> position(last, y) + 1
+    end
+  end
 
 end
