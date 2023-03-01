@@ -1,4 +1,5 @@
 defmodule Moves do
+
   def single({_, 0}, state) do
     state
   end
@@ -20,4 +21,12 @@ defmodule Moves do
     {_, remain, taken} = Train.main(main, n)
     {remain, one, Train.append(taken, two)}
   end
+
+  def sequence(seq, state) do
+    case seq do
+      [] -> [state]
+      [move|rest] -> [state|sequence(rest, single(move, state))]
+    end
+  end
+
 end
