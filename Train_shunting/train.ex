@@ -1,14 +1,14 @@
 defmodule Train do
 
   def take(_, 0) do [] end
-  def take([first | rest ], n) do
+  def take([first | rest], n) do
     if n > 0 do
     [first | take(rest, n - 1)]
     end
   end
 
   def drop(train, 0) do train end
-  def drop([ _ | rest ], n) do
+  def drop([ _ | rest], n) do
     if n > 0 do
       drop(rest, n-1)
     end
@@ -19,18 +19,22 @@ defmodule Train do
   end
 
   def member([], _) do false end
-  def member([first | last], y) do
+  def member([first | rest], y) do
     case first do
       ^y -> true
-      _ -> member(last, y)
+      _ -> member(rest, y)
     end
   end
 
-  def position([first | last], y) do
+  def position([first | rest], y) do
     case first do
       ^y -> 1
-      _ -> position(last, y) + 1
+      _ -> position(rest, y) + 1
     end
+  end
+
+  def split([first | rest]) do
+
   end
 
 end
