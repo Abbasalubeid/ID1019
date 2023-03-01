@@ -10,5 +10,9 @@ defmodule Train do
     drop(rest, n-1)
   end
 
+  def append(train1, train2) do
+    train1 ++ train2
+  end
+
 
 end
