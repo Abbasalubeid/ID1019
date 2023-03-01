@@ -33,8 +33,16 @@ defmodule Train do
     end
   end
 
-  def split([first | rest]) do
-
+  def split([], _) do
+    {[], []}
   end
+  def split([y | rest], y) do
+    {[], rest}
+  end
+  def split([first | rest], y) do
+    {left, right} = split(rest, y)
+    {[first | left], right}
+  end
+
 
 end
