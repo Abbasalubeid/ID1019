@@ -44,5 +44,14 @@ defmodule Train do
     {[first | left], right}
   end
 
+  def main([], n) do {n, [], []} end
+  def main([first | last], n) do
+      case main(last, n) do
+	      {0, drop, take} ->
+	        {0, [first |  drop], take}
+	      {n, drop, take} ->
+	        {n-1, drop, [first | take]}
+      end
+  end
 
 end
