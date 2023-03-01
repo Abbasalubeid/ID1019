@@ -14,5 +14,13 @@ defmodule Train do
     train1 ++ train2
   end
 
+  def member([], _) do false end
+  def member([first | last], y) do
+    case first do
+      ^y -> true
+      _ -> member(last, y)
+    end
+  end
+
 
 end
