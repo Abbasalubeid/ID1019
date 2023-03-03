@@ -25,7 +25,8 @@ defmodule Moves do
   def sequence(seq, state) do
     case seq do
       [] -> [state]
-      [move|rest] -> [state|sequence(rest, single(move, state))]
+      [move|rest] ->
+        [state|sequence(rest, single(move, state))]
     end
   end
 
