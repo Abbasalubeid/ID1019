@@ -22,6 +22,13 @@ defmodule Shunt do
     end
   end
 
-
+  def compress(ms) do
+    ns = rules(ms)
+    if ns == ms do
+      ms
+    else
+      compress(ns)
+    end
+  end
 
 end
