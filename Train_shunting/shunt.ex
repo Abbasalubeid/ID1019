@@ -6,7 +6,8 @@ defmodule Shunt do
     {hs, ts} = Train.split(xs, left)
     tn = length(ts)
     hn = length(hs)
-    [{:one, tn+1}, {:two, hn}, {:one, -(tn+1)}, {:two, -hn} | find(Train.append(hs, ts), ys)]
+    [{:one, tn+1}, {:two, hn}, {:one, -(tn+1)}, {:two, -hn} |
+      find(Train.append(hs, ts), ys)]
   end
 
   def few([], []) do [] end
@@ -16,7 +17,8 @@ defmodule Shunt do
     if (x != left) do
       tn = length(ts)
       hn = length(hs)
-      [{:one, tn+1}, {:two, hn}, {:one, -(tn+1)}, {:two, -hn} | few(Train.append(hs, ts), ys)]
+      [{:one, tn+1}, {:two, hn}, {:one, -(tn+1)}, {:two, -hn} |
+        few(Train.append(hs, ts), ys)]
     else
       few(ts, ys)
     end
