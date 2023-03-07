@@ -11,44 +11,54 @@ defmodule Huffman do
     'this is something that we should encode'
   end
 
-  def test do
-    sample = sample()
-    tree = tree(sample)
-    encode = encode_table(tree)
-    decode = decode_table(tree)
-    text = text()
-    seq = encode(text, encode)
-    decode(seq, decode)
-  end
+  # def test do
+  #   sample = sample()
+  #   tree = tree(sample)
+  #   encode = encode_table(tree)
+  #   decode = decode_table(tree)
+  #   text = text()
+  #   seq = encode(text, encode)
+  #   decode(seq, decode)
+  # end
 
   def tree(sample) do
     freq = freq(sample)
-    huffman(freq)
+    # huffman(freq)
   end
 
   def freq(sample) do
-    freq(sample, ...)
+    freq(sample, [])
   end
   def freq([], freq) do
-    ...
+    freq
   end
   def freq([char | rest], freq) do
-    freq(rest, ...)
+    freq(rest, new_freq(char, freq))
   end
 
-  def encode_table(tree) do
-    # To implement...
+  #The char was not in the list
+  def new_freq(char, []) do [{char, 1}] end
+  def new_freq(char, [first | rest]) do
+    case first do
+      {^char, n} -> [{char, n+1} | rest]
+      #If the char is not found, check in the rest
+      _  ->  [first | new_freq(char, rest)]
+    end
   end
 
-  def decode_table(tree) do
-    # To implement...
-  end
+#   def encode_table(tree) do
+#     # To implement...
+#   end
 
-  def encode(text, table) do
-    # To implement...
-  end
+#   def decode_table(tree) do
+#     # To implement...
+#   end
 
-  def decode(seq, tree) do
-    # To implement...
-  end
+#   def encode(text, table) do
+#     # To implement...
+#   end
+
+#   def decode(seq, tree) do
+#     # To implement...
+#   end
 end
