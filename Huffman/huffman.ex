@@ -1,29 +1,8 @@
 defmodule Huffman do
-  def sample do
-    'the quick brown fox jumps over the lazy dog
-    this is a sample text that we will use when we build
-    up a table we will only handle lower case letters and
-    no punctuation symbols the frequency will of course not
-    represent english but it is probably not that far off'
-  end
-
-  def text()  do
-    'this is something that we should encode'
-  end
-
-  # def test do
-  #   sample = sample()
-  #   tree = tree(sample)
-  #   encode = encode_table(tree)
-  #   decode = decode_table(tree)
-  #   text = text()
-  #   seq = encode(text, encode)
-  #   decode(seq, decode)
-  # end
 
   def tree(sample) do
     freq = freq(sample)
-    # huffman(freq)
+    huffman(freq)
   end
 
   def freq(sample) do
@@ -46,19 +25,62 @@ defmodule Huffman do
     end
   end
 
-#   def encode_table(tree) do
-#     # To implement...
-#   end
+  def huffman(freq) do
+    sorted = Enum.sort(freq, fn({_, x}, {_, y}) -> x < y end)
+    huffman_tree(sorted)
+  end
 
-#   def decode_table(tree) do
-#     # To implement...
-#   end
+  def huffman_tree([{tree, _}]) do tree end
+  def huffman_tree([{char1, char1f}, {char2, char2f} | rest]) do
+    huffman_tree(insert({{char1, char2}, char1f + char2f}, rest))
+  end
 
-#   def encode(text, table) do
-#     # To implement...
-#   end
+  def insert({char1, char1f}, []) do
+    [{char1, char1f}]
+  end
+  def insert({char1, char1f}, [{char2, char2f} | rest]) do
+    case char1f < char2f do
+      true -> [{char1, char1f}, {char2, char2f} | rest]
+      _ -> [{char2, char2f} | insert({char1, char1f}, rest)]
+    end
+  end
 
-#   def decode(seq, tree) do
-#     # To implement...
-#   end
+  def encode_table(tree) do
+    codes(tree, [])
+  end
+
+  def codes({left, right}, path) do
+    left_path = codes(left, [path ++ [0]])
+    right_path = codes(right, [path ++ [1]])
+    left_path ++ right_path
+  end
+  def codes(char, code) do
+    [{char, Enum.reverse(code)}]
+  end
+
+  def encode([], _), do: []
+  def encode([char | rest], table) do
+    {_, code} = List.keyfind(table, char, 0)
+    code ++ encode(rest, table)
+  end
+
+  def decode_table(tree) do
+    codes(tree, [])
+  end
+
+  def decode([], _) do [] end
+  def decode(seq, table) do
+    {char, rest} = decode_char(seq, 1, table)
+    [char | decode(rest, table)]
+  end
+
+  def decode_char(seq, n, table) do
+    {code, rest} = Enum.split(seq, n)
+    case List.keyfind(table, code, 1) do
+      {char, _} ->
+        {char, rest}
+      nil ->
+        decode_char(seq, n + 1, table)
+    end
+  end
 end
