@@ -55,7 +55,7 @@ defmodule Huffman do
     left_path ++ right_path
   end
   def codes(char, code) do
-    [{char, Enum.reverse(code)}]
+    [{char, code}]
   end
 
   def encode([], _), do: []
