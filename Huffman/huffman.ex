@@ -50,8 +50,8 @@ defmodule Huffman do
   end
 
   def codes({left, right}, path) do
-    left_path = codes(left, [path ++ [0]])
-    right_path = codes(right, [path ++ [1]])
+    left_path = codes(left, path ++ [0])
+    right_path = codes(right, path ++ [1])
     left_path ++ right_path
   end
   def codes(char, code) do
